@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "commandes",
+  "info": {
+    "singularName": "commande",
+    "pluralName": "commandes",
+    "displayName": "commande"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date_commande": {
+      "type": "datetime"
+    },
+    "statut": {
+      "type": "enumeration",
+      "enum": [
+        "en attente",
+        "completer",
+        "annuler"
+      ]
+    },
+    "montant_total": {
+      "type": "decimal"
+    },
+    "adresse_livraison": {
+      "type": "json"
+    },
+    "adresse_facturation": {
+      "type": "json"
+    },
+    "mode_paiement": {
+      "type": "enumeration",
+      "enum": [
+        "orange money",
+        "Mtn mobile money",
+        "UBA"
+      ]
+    },
+    "statut_paiement": {
+      "type": "enumeration",
+      "enum": [
+        "compléter",
+        "en attente",
+        "annuler"
+      ]
+    },
+    "numero_suivi": {
+      "type": "string"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "commandes"
+    },
+    "ligne_commandes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ligne-commande.ligne-commande",
+      "mappedBy": "commande"
+    }
+  }
+}

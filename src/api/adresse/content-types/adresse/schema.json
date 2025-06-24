@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "adresses",
+  "info": {
+    "singularName": "adresse",
+    "pluralName": "adresses",
+    "displayName": "adresse"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type_adresse": {
+      "type": "enumeration",
+      "enum": [
+        "facturation",
+        "expédition"
+      ]
+    },
+    "rue": {
+      "type": "string"
+    },
+    "ville": {
+      "type": "string"
+    },
+    "code_postal": {
+      "type": "string"
+    },
+    "pays": {
+      "type": "string"
+    },
+    "complement": {
+      "type": "string"
+    },
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "adresses"
+    }
+  }
+}

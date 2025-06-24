@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lignes_paniers",
+  "info": {
+    "singularName": "lignes-panier",
+    "pluralName": "lignes-paniers",
+    "displayName": "lignes_panier"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quantite": {
+      "type": "integer"
+    },
+    "produit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::produit.produit",
+      "inversedBy": "lignes_paniers"
+    }
+  }
+}

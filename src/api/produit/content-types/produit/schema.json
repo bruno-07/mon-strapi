@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "produits",
+  "info": {
+    "singularName": "produit",
+    "pluralName": "produits",
+    "displayName": "produit"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nom": {
+      "type": "string"
+    },
+    "description_courte": {
+      "type": "string"
+    },
+    "prix": {
+      "type": "decimal"
+    },
+    "prix_reduit": {
+      "type": "decimal"
+    },
+    "stock": {
+      "type": "integer"
+    },
+    "poids": {
+      "type": "decimal"
+    },
+    "dimensions": {
+      "type": "decimal"
+    },
+    "visible": {
+      "type": "boolean"
+    },
+    "ligne_commandes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ligne-commande.ligne-commande",
+      "mappedBy": "produit"
+    },
+    "lignes_paniers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::lignes-panier.lignes-panier",
+      "mappedBy": "produit"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::categorie.categorie",
+      "mappedBy": "produits"
+    },
+    "marque": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::marque.marque",
+      "inversedBy": "produits"
+    },
+    "avis": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::avi.avi",
+      "mappedBy": "produit"
+    },
+    "images": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::image.image",
+      "mappedBy": "produit"
+    },
+    "imege_produit": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

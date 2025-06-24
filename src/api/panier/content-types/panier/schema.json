@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "paniers",
+  "info": {
+    "singularName": "panier",
+    "pluralName": "paniers",
+    "displayName": "panier"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date_creation": {
+      "type": "date"
+    },
+    "date_derniere_mise_a_jour": {
+      "type": "date"
+    },
+    "statut": {
+      "type": "enumeration",
+      "enum": [
+        "Actif",
+        "Converti",
+        "Abandonné",
+        "Expiré"
+      ]
+    },
+    "admin_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
+    },
+    "ligne_commandes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ligne-commande.ligne-commande",
+      "mappedBy": "panier"
+    }
+  }
+}

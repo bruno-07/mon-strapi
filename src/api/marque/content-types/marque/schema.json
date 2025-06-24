@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "marques",
+  "info": {
+    "singularName": "marque",
+    "pluralName": "marques",
+    "displayName": "marque"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Nom": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "produits": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::produit.produit",
+      "mappedBy": "marque"
+    }
+  }
+}
