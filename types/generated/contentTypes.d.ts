@@ -466,8 +466,16 @@ export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nom: Schema.Attribute.String;
+    parentCategorie: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::categorie.categorie'
+    >;
     produits: Schema.Attribute.Relation<'manyToMany', 'api::produit.produit'>;
     publishedAt: Schema.Attribute.DateTime;
+    sousCategories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::categorie.categorie'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
