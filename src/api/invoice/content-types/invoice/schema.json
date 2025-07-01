@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoices",
+  "info": {
+    "singularName": "invoice",
+    "pluralName": "invoices",
+    "displayName": "Invoice"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "invoiceNumber": {
+      "type": "string"
+    },
+    "totalAmount": {
+      "type": "decimal"
+    },
+    "pdfFile": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "commande": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::commande.commande"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invoices"
+    }
+  }
+}

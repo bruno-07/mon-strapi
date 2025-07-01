@@ -95,6 +95,32 @@
       "relation": "oneToMany",
       "target": "api::adresse.adresse",
       "mappedBy": "client"
+    },
+    "Genre": {
+      "type": "enumeration",
+      "enum": [
+        "homme",
+        "femme",
+        "autres"
+      ]
+    },
+    "adresseslivraison": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::adresse.adresse",
+      "mappedBy": "users_permissions_user"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "users_permissions_user"
+    },
+    "favorites": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::favorite.favorite",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

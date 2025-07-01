@@ -25,12 +25,6 @@
     "montant_total": {
       "type": "decimal"
     },
-    "adresse_livraison": {
-      "type": "json"
-    },
-    "adresse_facturation": {
-      "type": "json"
-    },
     "mode_paiement": {
       "type": "enumeration",
       "enum": [
@@ -61,6 +55,12 @@
       "relation": "oneToMany",
       "target": "api::ligne-commande.ligne-commande",
       "mappedBy": "commande"
+    },
+    "address_de_livraison": {
+      "type": "string"
+    },
+    "details": {
+      "type": "json"
     }
   }
 }

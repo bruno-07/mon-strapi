@@ -400,6 +400,7 @@ export interface ApiAdresseAdresse extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     pays: Schema.Attribute.String;
+    phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     rue: Schema.Attribute.String;
     type_adresse: Schema.Attribute.Enumeration<
@@ -408,6 +409,10 @@ export interface ApiAdresseAdresse extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     ville: Schema.Attribute.String;
   };
 }
@@ -493,12 +498,12 @@ export interface ApiCommandeCommande extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    adresse_facturation: Schema.Attribute.JSON;
-    adresse_livraison: Schema.Attribute.JSON;
+    address_de_livraison: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     date_commande: Schema.Attribute.DateTime;
+    details: Schema.Attribute.JSON;
     ligne_commandes: Schema.Attribute.Relation<
       'oneToMany',
       'api::ligne-commande.ligne-commande'
@@ -531,6 +536,38 @@ export interface ApiCommandeCommande extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFavoriteFavorite extends Struct.CollectionTypeSchema {
+  collectionName: 'favorites';
+  info: {
+    displayName: 'Favorite';
+    pluralName: 'favorites';
+    singularName: 'favorite';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::favorite.favorite'
+    > &
+      Schema.Attribute.Private;
+    produit: Schema.Attribute.Relation<'oneToOne', 'api::produit.produit'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiImageImage extends Struct.CollectionTypeSchema {
   collectionName: 'images';
   info: {
@@ -554,6 +591,41 @@ export interface ApiImageImage extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String;
+  };
+}
+
+export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
+  collectionName: 'invoices';
+  info: {
+    displayName: 'Invoice';
+    pluralName: 'invoices';
+    singularName: 'invoice';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    commande: Schema.Attribute.Relation<'oneToOne', 'api::commande.commande'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    invoiceNumber: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::invoice.invoice'
+    > &
+      Schema.Attribute.Private;
+    pdfFile: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    publishedAt: Schema.Attribute.DateTime;
+    totalAmount: Schema.Attribute.Decimal;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1202,6 +1274,10 @@ export interface PluginUsersPermissionsUser
   attributes: {
     addresses: Schema.Attribute.Relation<'oneToMany', 'api::adresse.adresse'>;
     adresses: Schema.Attribute.Relation<'oneToMany', 'api::adresse.adresse'>;
+    adresseslivraison: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::adresse.adresse'
+    >;
     avis: Schema.Attribute.Relation<'oneToMany', 'api::avi.avi'>;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     commandes: Schema.Attribute.Relation<'oneToMany', 'api::commande.commande'>;
@@ -1215,6 +1291,9 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    favorites: Schema.Attribute.Relation<'oneToMany', 'api::favorite.favorite'>;
+    Genre: Schema.Attribute.Enumeration<['homme', 'femme', 'autres']>;
+    invoices: Schema.Attribute.Relation<'oneToMany', 'api::invoice.invoice'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1261,7 +1340,9 @@ declare module '@strapi/strapi' {
       'api::avi.avi': ApiAviAvi;
       'api::categorie.categorie': ApiCategorieCategorie;
       'api::commande.commande': ApiCommandeCommande;
+      'api::favorite.favorite': ApiFavoriteFavorite;
       'api::image.image': ApiImageImage;
+      'api::invoice.invoice': ApiInvoiceInvoice;
       'api::ligne-commande.ligne-commande': ApiLigneCommandeLigneCommande;
       'api::lignes-panier.lignes-panier': ApiLignesPanierLignesPanier;
       'api::marque.marque': ApiMarqueMarque;
