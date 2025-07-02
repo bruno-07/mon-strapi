@@ -11,8 +11,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Nom": {
-      "type": "string"
+    "name": {
+      "type": "string",
+      "required": false,
+      "unique": false
     },
     "description": {
       "type": "string"
@@ -23,8 +25,13 @@
     "produits": {
       "type": "relation",
       "relation": "oneToMany",
+      "target": "api::produit.produit"
+    },
+    "produit": {
+      "type": "relation",
+      "relation": "oneToOne",
       "target": "api::produit.produit",
-      "mappedBy": "marque"
+      "inversedBy": "marqu"
     }
   }
 }

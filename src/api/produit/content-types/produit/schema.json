@@ -11,20 +11,26 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Nom": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "shortDescription": {
       "type": "string"
     },
-    "description_courte": {
-      "type": "string"
-    },
-    "prix": {
-      "type": "decimal"
+    "price": {
+      "type": "decimal",
+      "required": true
     },
     "prix_reduit": {
       "type": "decimal"
     },
     "stock": {
-      "type": "integer"
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "unique": true
     },
     "poids": {
       "type": "decimal"
@@ -47,18 +53,6 @@
       "target": "api::lignes-panier.lignes-panier",
       "mappedBy": "produit"
     },
-    "categories": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::categorie.categorie",
-      "mappedBy": "produits"
-    },
-    "marque": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::marque.marque",
-      "inversedBy": "produits"
-    },
     "avis": {
       "type": "relation",
       "relation": "oneToMany",
@@ -71,7 +65,20 @@
       "target": "api::image.image",
       "mappedBy": "produit"
     },
-    "imege_produit": {
+    "mainImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "description": {
+      "type": "text"
+    },
+    "gallery": {
       "type": "media",
       "multiple": true,
       "allowedTypes": [
@@ -80,6 +87,32 @@
         "videos",
         "audios"
       ]
+    },
+    "produit": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categorie.categorie"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::categorie.categorie",
+      "mappedBy": "categorie"
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "mappedBy": "produits"
+    },
+    "marqu": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::marque.marque",
+      "mappedBy": "produit"
+    },
+    "seoTitle": {
+      "type": "string"
     }
   }
 }

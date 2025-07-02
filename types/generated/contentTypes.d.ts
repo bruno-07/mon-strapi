@@ -452,7 +452,7 @@ export interface ApiAviAvi extends Struct.CollectionTypeSchema {
 export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
-    displayName: 'Cat\u00E9gorie';
+    displayName: 'categorie';
     pluralName: 'categories';
     singularName: 'categorie';
   };
@@ -460,23 +460,27 @@ export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    categorie: Schema.Attribute.Relation<'manyToOne', 'api::produit.produit'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::categorie.categorie'
     > &
       Schema.Attribute.Private;
-    nom: Schema.Attribute.String;
+    name: Schema.Attribute.String;
     parentCategorie: Schema.Attribute.Relation<
       'manyToOne',
       'api::categorie.categorie'
     >;
-    produits: Schema.Attribute.Relation<'manyToMany', 'api::produit.produit'>;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     sousCategories: Schema.Attribute.Relation<
       'oneToMany',
       'api::categorie.categorie'
@@ -715,7 +719,8 @@ export interface ApiMarqueMarque extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     logo_url: Schema.Attribute.String;
-    Nom: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    produit: Schema.Attribute.Relation<'oneToOne', 'api::produit.produit'>;
     produits: Schema.Attribute.Relation<'oneToMany', 'api::produit.produit'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -774,19 +779,19 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
   attributes: {
     avis: Schema.Attribute.Relation<'oneToMany', 'api::avi.avi'>;
     categories: Schema.Attribute.Relation<
-      'manyToMany',
+      'oneToMany',
       'api::categorie.categorie'
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description_courte: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
     dimensions: Schema.Attribute.Decimal;
-    images: Schema.Attribute.Relation<'oneToMany', 'api::image.image'>;
-    imege_produit: Schema.Attribute.Media<
+    gallery: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
+    images: Schema.Attribute.Relation<'oneToMany', 'api::image.image'>;
     ligne_commandes: Schema.Attribute.Relation<
       'oneToMany',
       'api::ligne-commande.ligne-commande'
@@ -801,17 +806,53 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
       'api::produit.produit'
     > &
       Schema.Attribute.Private;
-    marque: Schema.Attribute.Relation<'manyToOne', 'api::marque.marque'>;
-    Nom: Schema.Attribute.String;
+    mainImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    marqu: Schema.Attribute.Relation<'oneToOne', 'api::marque.marque'>;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     poids: Schema.Attribute.Decimal;
-    prix: Schema.Attribute.Decimal;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
     prix_reduit: Schema.Attribute.Decimal;
+    produit: Schema.Attribute.Relation<'oneToOne', 'api::categorie.categorie'>;
     publishedAt: Schema.Attribute.DateTime;
-    stock: Schema.Attribute.Integer;
+    seoTitle: Schema.Attribute.String;
+    shortDescription: Schema.Attribute.String;
+    stock: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.DefaultTo<0>;
+    tags: Schema.Attribute.Relation<'manyToMany', 'api::tag.tag'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface ApiTagTag extends Struct.CollectionTypeSchema {
+  collectionName: 'tags';
+  info: {
+    displayName: 'Tag';
+    pluralName: 'tags';
+    singularName: 'tag';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    produits: Schema.Attribute.Relation<'manyToMany', 'api::produit.produit'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1348,6 +1389,7 @@ declare module '@strapi/strapi' {
       'api::marque.marque': ApiMarqueMarque;
       'api::panier.panier': ApiPanierPanier;
       'api::produit.produit': ApiProduitProduit;
+      'api::tag.tag': ApiTagTag;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
