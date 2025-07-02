@@ -818,6 +818,9 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     seoTitle: Schema.Attribute.String;
     shortDescription: Schema.Attribute.String;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     stock: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.Unique &
