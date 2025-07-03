@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "Nom": {
       "type": "string",
       "required": false,
       "unique": false
@@ -31,7 +31,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::produit.produit",
-      "inversedBy": "marqu"
+      "inversedBy": "brand"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }

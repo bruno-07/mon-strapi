@@ -460,12 +460,13 @@ export interface ApiCategorieCategorie extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    categorie: Schema.Attribute.Relation<'manyToOne', 'api::produit.produit'>;
+    categories: Schema.Attribute.Relation<'oneToMany', 'api::produit.produit'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    isMainCategory: Schema.Attribute.Boolean & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -719,10 +720,13 @@ export interface ApiMarqueMarque extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     logo_url: Schema.Attribute.String;
-    name: Schema.Attribute.String;
+    Nom: Schema.Attribute.String;
     produit: Schema.Attribute.Relation<'oneToOne', 'api::produit.produit'>;
     produits: Schema.Attribute.Relation<'oneToMany', 'api::produit.produit'>;
     publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -777,17 +781,20 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    ancienPrix: Schema.Attribute.Decimal;
     avis: Schema.Attribute.Relation<'oneToMany', 'api::avi.avi'>;
-    categories: Schema.Attribute.Relation<
-      'oneToMany',
+    brand: Schema.Attribute.Relation<'oneToOne', 'api::marque.marque'>;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
       'api::categorie.categorie'
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    dimension: Schema.Attribute.JSON;
     dimensions: Schema.Attribute.Decimal;
-    gallery: Schema.Attribute.Media<
+    galleryImages: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
@@ -807,11 +814,9 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     mainImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    marqu: Schema.Attribute.Relation<'oneToOne', 'api::marque.marque'>;
-    name: Schema.Attribute.String &
+    Nom: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    poids: Schema.Attribute.Decimal;
     price: Schema.Attribute.Decimal & Schema.Attribute.Required;
     prix_reduit: Schema.Attribute.Decimal;
     produit: Schema.Attribute.Relation<'oneToOne', 'api::categorie.categorie'>;
@@ -823,13 +828,13 @@ export interface ApiProduitProduit extends Struct.CollectionTypeSchema {
       Schema.Attribute.Unique;
     stock: Schema.Attribute.Integer &
       Schema.Attribute.Required &
-      Schema.Attribute.Unique &
       Schema.Attribute.DefaultTo<0>;
     tags: Schema.Attribute.Relation<'manyToMany', 'api::tag.tag'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     visible: Schema.Attribute.Boolean;
+    weight: Schema.Attribute.Decimal;
   };
 }
 

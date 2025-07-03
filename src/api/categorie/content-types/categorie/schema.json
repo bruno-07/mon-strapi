@@ -29,11 +29,11 @@
       "target": "api::categorie.categorie",
       "mappedBy": "parentCategorie"
     },
-    "categorie": {
+    "categories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::produit.produit",
-      "inversedBy": "categories"
+      "mappedBy": "category"
     },
     "slug": {
       "type": "string",
@@ -49,6 +49,10 @@
         "videos",
         "audios"
       ]
+    },
+    "isMainCategory": {
+      "type": "boolean",
+      "required": true
     }
   }
 }

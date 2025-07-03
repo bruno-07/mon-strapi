@@ -11,7 +11,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "Nom": {
       "type": "string",
       "required": true,
       "unique": true
@@ -30,9 +30,9 @@
       "type": "integer",
       "required": true,
       "default": 0,
-      "unique": true
+      "unique": false
     },
-    "poids": {
+    "weight": {
       "type": "decimal"
     },
     "dimensions": {
@@ -78,7 +78,7 @@
     "description": {
       "type": "text"
     },
-    "gallery": {
+    "galleryImages": {
       "type": "media",
       "multiple": true,
       "allowedTypes": [
@@ -93,11 +93,11 @@
       "relation": "oneToOne",
       "target": "api::categorie.categorie"
     },
-    "categories": {
+    "category": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::categorie.categorie",
-      "mappedBy": "categorie"
+      "inversedBy": "categories"
     },
     "tags": {
       "type": "relation",
@@ -105,7 +105,7 @@
       "target": "api::tag.tag",
       "mappedBy": "produits"
     },
-    "marqu": {
+    "brand": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::marque.marque",
@@ -118,6 +118,13 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "ancienPrix": {
+      "type": "decimal",
+      "required": false
+    },
+    "dimension": {
+      "type": "json"
     }
   }
 }
